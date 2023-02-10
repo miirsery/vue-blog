@@ -6,9 +6,6 @@ module.exports = {
       url: 'https://swapi-graphql.netlify.app/.netlify/functions/index',
     },
     // Files processed by the extension
-    includes: [
-      'src/**/*.vue',
-      'src/**/*.js',
-    ],
+    includes: ['src/**/*.vue', 'src/**/*.js'],
   },
 }
