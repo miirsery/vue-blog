@@ -1,0 +1,74 @@
+stages:
+  - test
+  - build
+  - deploy
+
+variables:
+  IMAGE_REPOSITORY: $CI_REGISTRY_IMAGE/app
+  IMAGE_TAG: $CI_COMMIT_SHORT_SHA
+  IMAGE: $IMAGE_REPOSITORY
+  APP_IMAGE_PATH: $CI_REGISTRY_IMAGE/app-$CI_ENVIRONMENT_NAME-$CI_COMMIT_BRANCH:v$CI_PIPELINE_ID
+
+.base_build:
+  stage: build
+  before_script:
+    - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
+  script:
+    - echo $IMAGE
+    - cp $ENV .env
+    - docker build -f ./containers/app/Dockerfile . -t $APP_IMAGE_PATH
+    - docker image push $APP_IMAGE_PATH
+
+.deploy_config:
+  stage: deploy
+  before_script:
+    - apk add --update openssh-client bash
+    - eval $(ssh-agent -s)
+    - bash -c 'ssh-add <(echo "$SSH_PRIVATE_KEY")'
+    - mkdir ~/.ssh
+    - ssh-keyscan $ADDRESS >> ~/.ssh/known_hosts
+  script:
+    - cp $ENV .env && sed -i "1iAPP_IMAGE_PATH=$APP_IMAGE_PATH\nIMAGE_TAG=$IMAGE_TAG" .env
+    - mv -f $COMPOSE_FILE docker-compose.yml
+    - ssh $USER@$ADDRESS "mkdir -p $PROJECT_DIR"
+    - ssh $USER@$ADDRESS "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
+    - scp .env docker-compose.yml $USER@$ADDRESS:$PROJECT_DIR/
+    - ssh $USER@$ADDRESS "cd $PROJECT_DIR && docker-compose up -d"
+
+cache: &cache-template
+  key:
+    files:
+      - package-lock.json
+  paths:
+    - node_modules/
+  policy: pull-push
+
+Npm Install:
+  image: node:16-alpine
+  stage: .pre
+  script:
+    - npm ci --prefer-offline
+  cache:
+    <<: *cache-template
+    policy: push
+
+Lint:
+  image: node:16-alpine
+  stage: test
+  script:
+    - npm run lint
+  cache:
+    <<: *cache-template
+    policy: pull
+
+Build Dev:
+  extends: .base_build
+  environment: dev
+  only:
+    - main
+
+Deploy Dev:
+  extends: .deploy_config
+  environment: dev
+  only:
+    - main
