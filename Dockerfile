@@ -6,11 +6,9 @@ COPY package*.json ./
 
 RUN npm install glob rimraf
 
-RUN npm install --only=development
+RUN npm ci
 
 COPY . .
-
-RUN npm run build
 
 FROM node:12.19.0-alpine3.9 as production
 
