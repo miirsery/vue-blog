@@ -71,3 +71,12 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+
+## Commands
+```
+nest - список всех команд
+nest g mo <moulde-name> - создаёт папку с модулем
+nest g s users/services/user - создает сервис 
+nest g r users/resolvers/user - создает резолвер 
+```
