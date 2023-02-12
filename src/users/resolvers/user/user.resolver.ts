@@ -1,4 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
+
 import { UserService } from '../../services/user/user.service'
 import { UserEntity } from '../../entities/user.entity'
 import { CreateUserDto } from '../../dto/create-user.dto'
@@ -18,9 +19,9 @@ export class UserResolver {
     return await this.userService.update(updateUserDto)
   }
 
-  @Mutation(() => UserEntity)
-  async deleteUser(@Args('id') id: number): Promise<number> {
-    return await this.userService.delete(id)
+  @Query(() => [UserEntity])
+  async getAllUsers(): Promise<UserEntity[]> {
+    return await this.userService.getAll()
   }
 
   @Query(() => UserEntity)
@@ -28,8 +29,8 @@ export class UserResolver {
     return await this.userService.getById(id)
   }
 
-  @Query(() => [UserEntity])
-  async getAllUsers(): Promise<UserEntity[]> {
-    return await this.userService.getAll()
+  @Mutation(() => UserEntity)
+  async deleteUser(@Args('id') id: number): Promise<number> {
+    return await this.userService.delete(id)
   }
 }
