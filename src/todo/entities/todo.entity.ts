@@ -1,7 +1,8 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
-import { UserEntity } from '../../users/entities/user.entity'
 import { JoinColumn } from 'typeorm'
+
+import { UserEntity } from '../../users/entities/user.entity'
 
 @ObjectType()
 @Entity('todos')

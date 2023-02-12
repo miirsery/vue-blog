@@ -29,7 +29,7 @@ export class UserResolver {
     return await this.userService.getById(id)
   }
 
-  @Mutation(() => UserEntity)
+  @Mutation(() => Number)
   async deleteUser(@Args('id') id: number): Promise<number> {
     return await this.userService.delete(id)
   }
