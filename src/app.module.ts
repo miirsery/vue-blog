@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { UsersModule } from './users/users.module'
 import { GraphQLModule } from '@nestjs/graphql'
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
+import { TodoModule } from './todo/todo.module'
 
 @Module({
   imports: [
@@ -33,9 +34,11 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
         synchronize: true,
         autoLoadEntities: true,
         logging: true,
+        useUTC: true,
       }),
     }),
     UsersModule,
+    TodoModule,
   ],
   controllers: [],
   providers: [],

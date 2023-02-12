@@ -2,6 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreateTodoDto {
+  text: String!
+  userId: Float!
+}
+
 input CreateUserDto {
   email: String!
   name: String
@@ -12,15 +17,43 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type GetTodoDto {
+  createdAt: String!
+  id: Float!
+  status: String!
+  text: String!
+  updatedAt: String!
+  userId: Float!
+}
+
 type Mutation {
+  createTodo(createTodo: CreateTodoDto!): TodoEntity!
   createUser(createUser: CreateUserDto!): UserEntity!
   deleteUser(id: Float!): UserEntity!
+  updateTodo(updateTodo: UpdateTodoDto!): TodoEntity!
   updateUser(updateUser: UpdateUserDto!): UserEntity!
 }
 
 type Query {
+  getAllTodos: [GetTodoDto!]!
   getAllUsers: [UserEntity!]!
+  getTodoById(id: Float!): TodoEntity!
   getUserById(id: Float!): UserEntity!
+}
+
+type TodoEntity {
+  createdAt: DateTime!
+  id: ID!
+  status: String!
+  text: String!
+  updatedAt: DateTime!
+  userId: Float!
+}
+
+input UpdateTodoDto {
+  id: Float!
+  status: String!
+  text: String!
 }
 
 input UpdateUserDto {
