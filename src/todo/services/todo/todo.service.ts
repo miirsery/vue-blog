@@ -26,6 +26,7 @@ export class TodoService {
     return await this.getById(updateTodoDto.id)
   }
 
+  // TODO: Добавить смену формата даты
   async getById(id: number): Promise<TodoEntity | null> {
     return await this.todoRepository.findOne({
       where: {
