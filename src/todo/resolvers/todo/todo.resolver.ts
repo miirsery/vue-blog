@@ -29,4 +29,9 @@ export class TodoResolver {
   async updateTodo(@Args('updateTodo') updateTodoDto: UpdateTodoDto): Promise<TodoEntity | null> {
     return this.todoService.update(updateTodoDto)
   }
+
+  @Mutation(() => TodoEntity)
+  async deleteTodo(@Args('id') id: number): Promise<number> {
+    return await this.todoService.delete(id)
+  }
 }
