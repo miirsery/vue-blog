@@ -15,6 +15,11 @@ export class TodoResolver {
     return this.todoService.create(createTodoDto)
   }
 
+  @Mutation(() => TodoEntity)
+  async updateTodo(@Args('updateTodo') updateTodoDto: UpdateTodoDto): Promise<TodoEntity | null> {
+    return this.todoService.update(updateTodoDto)
+  }
+
   @Query(() => [GetTodoDto])
   async getAllTodos(): Promise<GetTodoDto[]> {
     return await this.todoService.getAll()
@@ -25,12 +30,7 @@ export class TodoResolver {
     return await this.todoService.getById(id)
   }
 
-  @Mutation(() => TodoEntity)
-  async updateTodo(@Args('updateTodo') updateTodoDto: UpdateTodoDto): Promise<TodoEntity | null> {
-    return this.todoService.update(updateTodoDto)
-  }
-
-  @Mutation(() => TodoEntity)
+  @Mutation(() => Number)
   async deleteTodo(@Args('id') id: number): Promise<number> {
     return await this.todoService.delete(id)
   }

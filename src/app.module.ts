@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { UsersModule } from './users/users.module'
 import { GraphQLModule } from '@nestjs/graphql'
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
+
+import { UsersModule } from './users/users.module'
 import { TodoModule } from './todo/todo.module'
 
 @Module({

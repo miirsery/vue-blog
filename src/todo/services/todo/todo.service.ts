@@ -5,9 +5,10 @@ import { Repository } from 'typeorm'
 import { TodoEntity } from '../../entities/todo.entity'
 import { CreateTodoDto } from '../../dto/create-todo.dto'
 import { UpdateTodoDto } from '../../dto/update-todo.dto'
-import format from '../../../utils/date-format'
 import { outputFormats } from '../../../constants/date.constant'
 import { GetTodoDto } from '../../dto/get-todo.dto'
+
+import format from '../../../utils/date-format'
 
 @Injectable()
 export class TodoService {
