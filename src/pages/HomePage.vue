@@ -1,70 +1,65 @@
 <template>
   <div class="home-page">
-    <h1>Главная</h1>
-    <ul v-if="!filmsLoading">
-      <li v-for="currentFilm in films" :key="currentFilm.id">
-        <button @click="handleFilmGet(currentFilm.id)">#{{ currentFilm.id }} | {{ currentFilm.title }}</button>
-      </li>
-    </ul>
-    <div v-else>Loading...</div>
+    <h1 class="mb-8">Задачи</h1>
 
-    <div v-if="!isFilmLoading" class="home-page__film">
-      <h2>Детальный фильм</h2>
-      <div>
-        {{ film.title }}
+    <div class="cards">
+      <div class="cards__content">
+        <template v-if="!tasksLoading && tasks.length">
+          <task-card v-for="task in tasks" :id="task.id" :key="task.id" :text="task.text" @update-table="loadTasks" />
+        </template>
+
+        <div v-else>Loading...</div>
       </div>
-    </div>
 
-    <div v-else>Loading...</div>
+      <h4 v-if="!isTaskAddVisible" @click="handleAddTaskVisibleToggle">Добавить задачу</h4>
+
+      <task-add v-else @close="handleAddTaskVisibleToggle" />
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { useLazyQuery, useQuery } from '@vue/apollo-composable'
+import { onMounted, ref } from 'vue'
+import { useLazyQuery } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
+import { TodoType } from '@/types/todo.type'
 
-const films = ref([])
-const film = ref({})
-
-const { onResult: onFilmsResult, loading: filmsLoading } = useQuery(gql`
-  query getAllFilms {
-    allFilms {
-      films {
-        title
-        id
-      }
-    }
-  }
-`)
+const isTaskAddVisible = ref(false)
+const tasks = ref<TodoType[]>([])
 
 const {
-  load: getById,
-  variables,
-  loading: isFilmLoading,
-  onResult: onFilmResult,
-} = useLazyQuery(gql`
-  query getFilmById($filmId: ID) {
-    film(id: $filmId) {
-      id
-      title
+  onResult: onTasksResult,
+  loading: tasksLoading,
+  load: loadTodos,
+  refetch: tasksRefetch,
+} = useLazyQuery(
+  gql`
+    query {
+      getAllTodos {
+        id
+        userId
+        updatedAt
+        text
+        createdAt
+        status
+      }
     }
-  }
-`)
+  `
+)
 
-onFilmsResult((result: any) => {
-  films.value = result.data?.allFilms.films
+onTasksResult(({ data }) => {
+  tasks.value = data?.getAllTodos
 })
 
-onFilmResult((result: any) => {
-  film.value = result.data?.film
+onMounted(() => {
+  loadTodos()
 })
 
-const handleFilmGet = (id: string): void => {
-  variables.value = {
-    filmId: id,
-  }
+const loadTasks = async (): Promise<void> => {
+  tasksRefetch()
+}
 
-  getById()
+const handleAddTaskVisibleToggle = (): void => {
+  isTaskAddVisible.value = !isTaskAddVisible.value
 }
 </script>

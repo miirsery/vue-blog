@@ -44,3 +44,7 @@ npm run build
 ```sh
 npm run lint
 ```
+
+```
+"url": "https://swapi-graphql.netlify.app/.netlify/functions/index",
+```

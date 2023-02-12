@@ -8,6 +8,12 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     BankCard: typeof import('./src/components/molecules/BankCard/BankCard.vue')['default']
+    ChButton: typeof import('./src/components/ch/ChButton/ChButton.vue')['default']
+    ChForm: typeof import('./src/components/ch/ChForm/ChForm.vue')['default']
+    ChFormItem: typeof import('./src/components/ch/ChFormItem/ChFormItem.vue')['default']
+    ChInput: typeof import('./src/components/ch/ChInput/ChInput.vue')['default']
+    ChMessage: typeof import('./src/components/ch/ChMessage/ChMessage.vue')['default']
+    ChPagination: typeof import('./src/components/ch/ChPagination/ChPagination.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElDialog: typeof import('element-plus/es')['ElDialog']
@@ -37,5 +43,7 @@ declare module '@vue/runtime-core' {
     SSwiper: typeof import('./src/components/molecules/SSwiper/SSwiper.vue')['default']
     STag: typeof import('./src/components/global/STag/STag.vue')['default']
     SupportContent: typeof import('./src/components/molecules/SupportContent.vue')['default']
+    TaskAdd: typeof import('./src/components/Task/TaskAdd/TaskAdd.vue')['default']
+    TaskCard: typeof import('./src/components/Task/TaskCard/TaskCard.vue')['default']
   }
 }
