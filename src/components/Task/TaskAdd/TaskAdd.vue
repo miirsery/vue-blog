@@ -10,20 +10,34 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { useMutation } from '@vue/apollo-composable'
+import { CREATE } from '@/services/TodoService/TodoService'
 
 type Emits = {
   (e: 'close'): void
+  (e: 'update'): void
 }
 
 const emits = defineEmits<Emits>()
 
 const taskText = ref('')
 
+const { mutate: create } = useMutation(CREATE)
+
 const handleTaskAdd = async (): Promise<void> => {
-  console.log(taskText.value)
+  await create({
+    todo: {
+      userId: 1,
+      text: taskText.value,
+    },
+  })
+
+  handleClose()
 }
 
 const handleClose = (): void => {
   emits('close')
+
+  emits('update')
 }
 </script>

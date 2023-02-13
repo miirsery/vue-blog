@@ -9,7 +9,7 @@
 
 <script lang="ts" setup>
 import { useMutation } from '@vue/apollo-composable'
-import gql from 'graphql-tag'
+import { DELETE } from '@/services/TodoService/TodoService'
 
 type Props = {
   text: string
@@ -27,11 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits<Emits>()
 
-const { mutate: deleteById } = useMutation(gql`
-  mutation deleteTodo($id: Float!) {
-    deleteTodo(id: $id)
-  }
-`)
+const { mutate: deleteById } = useMutation(DELETE)
 
 const handleDelete = async (): Promise<void> => {
   await deleteById({
