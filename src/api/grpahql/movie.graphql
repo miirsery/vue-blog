@@ -1,7 +1,0 @@
-query getAllFilms {
-  allFilms {
-    films {
-      title
-    }
-  }
-}
