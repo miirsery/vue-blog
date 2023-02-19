@@ -3,7 +3,7 @@
     <div class="task-card__text">
       {{ props.text }}
     </div>
-    <ch-button type="primary" @click="handleDelete">X</ch-button>
+    <ch-button mode="primary" @click="handleDelete">X</ch-button>
   </div>
 </template>
 

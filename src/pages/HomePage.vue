@@ -3,18 +3,6 @@
     <h1 class="mb-8">Задачи</h1>
 
     <div class="d-f jc-sb">
-      <div>
-        <h2>Создать пользака</h2>
-        <ch-form>
-          <ch-form-item>
-            <ch-input v-model="registrationForm.email" placeholder="email" />
-          </ch-form-item>
-          <ch-form-item>
-            <ch-input v-model="registrationForm.name" placeholder="name" />
-          </ch-form-item>
-        </ch-form>
-        <ch-button @click="handleFormSubmit">submit</ch-button>
-      </div>
       <div class="cards">
         <div class="cards__content">
           <template v-if="!tasksLoading && tasks.length">
@@ -29,6 +17,23 @@
         <task-add v-else @close="handleAddTaskVisibleToggle" />
       </div>
     </div>
+
+    <ch-dialog title="Создать пользака" width="400">
+      <div class="login">
+        <ch-form class="login-form">
+          <ch-form-item class="login-form__item">
+            <ch-input v-model="registrationForm.email" label="email" type="email" />
+          </ch-form-item>
+          <ch-form-item class="login-form__item">
+            <ch-input v-model="registrationForm.name" label="name" />
+          </ch-form-item>
+          <ch-form-item class="login-form__item">
+            <ch-checkbox v-model="registrationForm.isRemember" label="Remember me" />
+          </ch-form-item>
+        </ch-form>
+        <ch-button mode="primary" type="submit" @click="handleFormSubmit">Login</ch-button>
+      </div>
+    </ch-dialog>
   </div>
 </template>
 
@@ -38,6 +43,7 @@ import { useLazyQuery, useMutation } from '@vue/apollo-composable'
 import { TodoType } from '@/types/todo.type'
 import { GET_ALL } from '@/services/TodoService/TodoService'
 import { CREATE } from '@/services/UserService/UserService'
+import ChDialog from '@/components/ch/ChDialog/ChDialog.vue'
 
 const isTaskAddVisible = ref(false)
 const tasks = ref<TodoType[]>([])
@@ -45,6 +51,7 @@ const tasks = ref<TodoType[]>([])
 const registrationForm = reactive({
   email: '',
   name: '',
+  isRemember: false,
 })
 
 const { onResult: onTasksResult, loading: tasksLoading, load: loadTodos, refetch: tasksRefetch } = useLazyQuery(GET_ALL)
@@ -78,3 +85,24 @@ const handleFormSubmit = (): void => {
   })
 }
 </script>
+
+<style lang="scss" scoped>
+.login {
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+
+  //backdrop-filter: blur(10px);
+
+  &-form {
+    &__item {
+      position: relative;
+      border-bottom: 2px solid #162938;
+      margin: 30px 0;
+    }
+  }
+}
+</style>
