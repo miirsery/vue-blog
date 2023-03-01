@@ -1,5 +1,5 @@
 <template>
-  <button :class="buttonClasses">
+  <button :class="buttonClasses" :type="props.type">
     <slot />
   </button>
 </template>
@@ -9,14 +9,16 @@ import { CommonType } from '@/types'
 import { computed } from 'vue'
 
 type Props = {
-  type?: CommonType
+  mode?: CommonType
+  type?: 'button' | 'reset' | 'submit'
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  type: 'info',
+  mode: 'info',
+  type: 'button',
 })
 
-const buttonClasses = computed(() => ['ch-button', `bg-${props.type}`])
+const buttonClasses = computed(() => ['ch-button', `bg-${props.mode}`])
 </script>
 
 <style lang="scss" scoped>
