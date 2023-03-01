@@ -9,6 +9,8 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     BankCard: typeof import('./src/components/molecules/BankCard/BankCard.vue')['default']
     ChButton: typeof import('./src/components/ch/ChButton/ChButton.vue')['default']
+    ChCheckbox: typeof import('./src/components/ch/ChCheckbox/components/ChCheckbox.vue')['default']
+    ChDialog: typeof import('./src/components/ch/ChDialog/components/ChDialog.vue')['default']
     ChForm: typeof import('./src/components/ch/ChForm/ChForm.vue')['default']
     ChFormItem: typeof import('./src/components/ch/ChFormItem/ChFormItem.vue')['default']
     ChInput: typeof import('./src/components/ch/ChInput/ChInput.vue')['default']
