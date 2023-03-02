@@ -12,33 +12,42 @@
           <div v-else>Loading...</div>
         </div>
 
+        <ch-input v-model="registrationForm.name" label="Name" />
+
+        <ch-button mode="primary" @click="handleMessageSend">Send</ch-button>
+
+        <h2>Names</h2>
+
+        <div v-for="(name, index) in names" :key="index">{{ name }}</div>
+
         <h4 v-if="!isTaskAddVisible" @click="handleAddTaskVisibleToggle">Добавить задачу</h4>
 
         <task-add v-else @close="handleAddTaskVisibleToggle" />
       </div>
     </div>
 
-    <ch-dialog title="Создать пользака" width="400">
-      <div class="login">
-        <ch-form class="login-form">
-          <ch-form-item class="login-form__item">
-            <ch-input v-model="registrationForm.email" label="email" type="email" />
-          </ch-form-item>
-          <ch-form-item class="login-form__item">
-            <ch-input v-model="registrationForm.name" label="name" />
-          </ch-form-item>
-          <ch-form-item class="login-form__item">
-            <ch-checkbox v-model="registrationForm.isRemember" label="Remember me" />
-          </ch-form-item>
-        </ch-form>
-        <ch-button mode="primary" type="submit" @click="handleFormSubmit">Login</ch-button>
-      </div>
-    </ch-dialog>
+    <!--    <ch-dialog title="Создать пользака" width="400">-->
+    <!--      <div class="login">-->
+    <!--        <ch-form class="login-form">-->
+    <!--          <ch-form-item class="login-form__item">-->
+    <!--            <ch-input v-model="registrationForm.email" label="email" type="email" />-->
+    <!--          </ch-form-item>-->
+    <!--          <ch-form-item class="login-form__item">-->
+    <!--            <ch-input v-model="registrationForm.name" label="name" />-->
+    <!--          </ch-form-item>-->
+    <!--          <ch-form-item class="login-form__item">-->
+    <!--            <ch-checkbox v-model="registrationForm.isRemember" label="Remember me" />-->
+    <!--          </ch-form-item>-->
+    <!--        </ch-form>-->
+    <!--        <ch-button mode="primary" type="submit" @click="handleFormSubmit">Login</ch-button>-->
+    <!--      </div>-->
+    <!--    </ch-dialog>-->
   </div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref, unref } from 'vue'
+import io from 'socket.io-client'
 import { useLazyQuery, useMutation } from '@vue/apollo-composable'
 import { TodoType } from '@/types/todo.type'
 import { GET_ALL } from '@/services/TodoService/TodoService'
@@ -47,6 +56,7 @@ import ChDialog from '@/components/ch/ChDialog/ChDialog.vue'
 
 const isTaskAddVisible = ref(false)
 const tasks = ref<TodoType[]>([])
+const names = ref<any>([])
 
 const registrationForm = reactive({
   email: '',
@@ -62,8 +72,32 @@ onTasksResult(({ data }) => {
   tasks.value = data?.getAllTodos
 })
 
+const handleMessageSend = (): void => {
+  const socketInstance = io('http://localhost:3000')
+
+  socketInstance.emit('newMessage', registrationForm.name)
+}
+
+const getCoins = (): void => {
+  const eventSource = new EventSource('http://localhost:3000/coins')
+
+  eventSource.onmessage = ({ data }): void => {
+    console.log(data)
+  }
+}
+
 onMounted(() => {
   loadTodos()
+
+  getCoins()
+
+  const socketInstance = io('http://localhost:3000')
+
+  socketInstance.on('onMessage', (data) => {
+    console.log('Data:', data)
+
+    names.value = [...unref(names), data.content]
+  })
 })
 
 const loadTasks = async (): Promise<void> => {
