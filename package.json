@@ -26,6 +26,8 @@
     "graphql-tag": "^2.12.6",
     "postcss-html": "^1.5.0",
     "sass": "^1.54.9",
+    "socket.io": "^4.6.1",
+    "socket.io-client": "^4.6.1",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-fonts": "^0.7.0",
     "vite-plugin-stylelint": "4.1.6",

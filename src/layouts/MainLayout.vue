@@ -15,7 +15,7 @@
   width: 100%;
   height: 100%;
   display: flex;
-  background: #234179;
+  background: #f4f4f4;
 
   &__content-wrapper {
     width: 100%;
