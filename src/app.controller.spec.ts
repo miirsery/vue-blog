@@ -1,17 +1,17 @@
 // import { Test, TestingModule } from '@nestjs/testing';
-// import { AppController } from './app.controller';
-// import { AppService } from './app.service';
+// import { AppController } from './data.controller';
+// import { AppService } from './data.service';
 //
 // describe('AppController', () => {
 //   let appController: AppController;
 //
 //   beforeEach(async () => {
-//     const app: TestingModule = await Test.createTestingModule({
+//     const data: TestingModule = await Test.createTestingModule({
 //       controllers: [AppController],
 //       providers: [AppService],
 //     }).compile();
 //
-//     appController = app.get<AppController>(AppController);
+//     appController = data.get<AppController>(AppController);
 //   });
 //
 //   describe('root', () => {

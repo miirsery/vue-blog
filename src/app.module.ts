@@ -6,6 +6,8 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
 
 import { UsersModule } from './users/users.module'
 import { TodoModule } from './todo/todo.module'
+import { CoinsModule } from './coins/coins.module'
+import { SocketModule } from './socket/socket.module';
 
 @Module({
   imports: [
@@ -40,8 +42,9 @@ import { TodoModule } from './todo/todo.module'
     }),
     UsersModule,
     TodoModule,
+    CoinsModule,
+    SocketModule,
   ],
   controllers: [],
-  providers: [],
 })
 export class AppModule {}

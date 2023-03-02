@@ -15,8 +15,8 @@ services:
     depends_on:
       - db
     volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+      - .:/usr/src/data
+      - /usr/src/data/node_modules
     restart: unless-stopped
 
   db:
