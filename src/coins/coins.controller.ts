@@ -11,8 +11,14 @@ export class CoinsController {
       message: 'Its okay',
     }
   }
+
   @Sse('coins')
   sse(): Observable<MessageEvent> {
-    return interval(1000).pipe(map((_) => ({ data: { hello: 'world' } } as MessageEvent)))
+    function randomNumber(min: number, max: number) {
+      const r = Math.random() * (max - min) + min
+      return Math.floor(r)
+    }
+
+    return interval(1000).pipe(map((_) => ({ data: { value: randomNumber(0, 10) } } as MessageEvent)))
   }
 }

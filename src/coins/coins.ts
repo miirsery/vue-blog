@@ -18,8 +18,6 @@ export class CoinsWebsocket implements OnModuleInit {
 
   @SubscribeMessage('newMessage')
   onNewMessage(@MessageBody() body: any) {
-    console.log(body)
-
     this.server.emit('onMessage', {
       message: 'new message',
       content: body,
